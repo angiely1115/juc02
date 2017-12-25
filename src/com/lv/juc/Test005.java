@@ -17,11 +17,11 @@ public class Test005 {
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-					System.out.println("���߳�,i:" + i);
+					System.out.println("t1子线程,i:" + i);
 				}
 			}
 		});
-		t1.setDaemon(true);//���߳�Ϊ�ػ��߳� �����߳�һ������
+		t1.setDaemon(true);//设置为守护线程
 		t1.start();
 		for (int i = 0; i < 5; i++) {
 			try {
@@ -29,9 +29,9 @@ public class Test005 {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			System.out.println("���߳�,i:" + i);
+			System.out.println("主线程,i:" + i);
 		}
-		System.out.println("���߳�ִ�����.....");
+		System.out.println("主线程结束.....");
 	}
 
 }

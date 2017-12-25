@@ -34,14 +34,70 @@ class Ticket implements Runnable{
 	private Lock lock = new ReentrantLock();
 
 	public void tick(){
-		System.out.println(--tick);
+		while (tick>0) {
+			//System.out.println(Thread.currentThread().getName());
+			lock.lock();//上锁
+			if(tick>0){
+				System.out.println(Thread.currentThread().getName() + " 完成售票，余票为：" + --tick);
+
+				try {
+					Thread.sleep(20);
+
+
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}finally {
+					lock.unlock();//释放锁
+				}
+
+			}
+
+		}
 	}
 
+	public synchronized void tick2(){
+		if(tick>0){
+			System.out.println(Thread.currentThread().getName() + " 完成售票，余票为：" + --tick);
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public  void tick3(){
+		while (tick>0) {
+			synchronized(this) {
+				if (tick > 0) {
+					System.out.println(Thread.currentThread().getName() + " 完成售票，余票为：" + --tick);
+					try {
+						Thread.sleep(20);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+	}
 	@Override
+	public void run() {
+		//tick();
+		while (tick>0) {
+
+			tick2();
+		}
+		//tick3();
+	}
+
+	/*@Override
 	public void run() {
 		while(tick > 0){
 			
-			lock.lock(); //上锁
+			lock.lock(); //上锁 体验下在方法体里面加锁
 			
 			try{
 				if(tick > 0){
@@ -49,13 +105,13 @@ class Ticket implements Runnable{
 						Thread.sleep(20);
 					} catch (InterruptedException e) {
 					}
-					tick();
-					System.out.println(Thread.currentThread().getName() + " 完成售票，余票为：" + tick);
+					//tick();
+					System.out.println(Thread.currentThread().getName() + " 完成售票，余票为：" + --tick);
 				}
 			}finally{
 				lock.unlock(); //释放锁
 			}
 		}
 	}
-	
+	*/
 }

@@ -7,16 +7,15 @@ import java.util.concurrent.locks.ReentrantLock;
 /*
  * 生产者消费者案例：
  */
-public class TestProductorAndConsumerForLock {
+public class TestProductorAndConsumerForLock2 {
 
-	public static void main(String[] args) throws InterruptedException {
-		Clerk clerk = new Clerk();
+	public static void main(String[] args) {
+		Clerk2 clerk = new Clerk2();
 
-		Productor pro = new Productor(clerk);
-		Consumer con = new Consumer(clerk);
+		Productor2 pro = new Productor2(clerk);
+		Consumer2 con = new Consumer2(clerk);
 
 		new Thread(pro, "生产者 A").start();
-		//Thread.sleep(200);
 		new Thread(con, "消费者 B").start();
 
 //		 new Thread(pro, "生产者 C").start();
@@ -25,30 +24,30 @@ public class TestProductorAndConsumerForLock {
 
 }
 
-class Clerk {
-	private volatile int product = 0;
+class Clerk2 {
+	private int product = 0;
 
 	private Lock lock = new ReentrantLock();
-	private Condition get = lock.newCondition();
-	private Condition sale = lock.newCondition();
+	private Condition condition = lock.newCondition();
 
 	// 进货
 	public void get() {
 		lock.lock();
+
 		try {
 			if (product >= 1) { // 为了避免虚假唤醒，应该总是使用在循环中。
 				System.out.println("产品已满！");
 
 				try {
-					get.await();
+					condition.await();
 				} catch (InterruptedException e) {
 				}
+
 			}
-				System.out.println(Thread.currentThread().getName() + " : "
-						+ ++product);
+			System.out.println(Thread.currentThread().getName() + " : "
+					+ ++product);
 
-			sale.signalAll();
-
+			condition.signalAll();
 		} finally {
 			lock.unlock();
 		}
@@ -58,20 +57,22 @@ class Clerk {
 	// 卖货
 	public void sale() {
 		lock.lock();
+
 		try {
 			if (product <= 0) {
 				System.out.println("缺货！");
 
 				try {
-					sale.await();
+					condition.await();
 				} catch (InterruptedException e) {
 				}
-
 			}
 
-				System.out.println(Thread.currentThread().getName() + " : "
-						+ --product);
-			get.signalAll();
+			System.out.println(Thread.currentThread().getName() + " : "
+					+ --product);
+
+			condition.signalAll();
+
 		} finally {
 			lock.unlock();
 		}
@@ -79,11 +80,11 @@ class Clerk {
 }
 
 // 生产者
-class Productor implements Runnable {
+class Productor2 implements Runnable {
 
-	private Clerk clerk;
+	private Clerk2 clerk;
 
-	public Productor(Clerk clerk) {
+	public Productor2(Clerk2 clerk) {
 		this.clerk = clerk;
 	}
 
@@ -102,11 +103,11 @@ class Productor implements Runnable {
 }
 
 // 消费者
-class Consumer implements Runnable {
+class Consumer2 implements Runnable {
 
-	private Clerk clerk;
+	private Clerk2 clerk;
 
-	public Consumer(Clerk clerk) {
+	public Consumer2(Clerk2 clerk) {
 		this.clerk = clerk;
 	}
 
