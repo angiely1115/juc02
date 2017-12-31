@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
  * ScheduledExecutorService newScheduledThreadPool() : 创建固定大小的线程，可以延迟或定时的执行任务。
  */
 public class TestThreadPool {
-	
+
 	public static void main(String[] args) throws Exception {
 		//1. 创建线程池
 		ExecutorService pool = Executors.newFixedThreadPool(5);
@@ -51,7 +51,7 @@ public class TestThreadPool {
 			list.add(future);
 		}
 		
-		pool.shutdown();
+		//pool.shutdown();
 		
 		for (Future<Integer> future : list) {
 			System.out.println(future.get());
@@ -59,15 +59,16 @@ public class TestThreadPool {
 		
 		
 		
-		/*ThreadPoolDemo tpd = new ThreadPoolDemo();
-		
+		ThreadPoolDemo tpd = new ThreadPoolDemo();
+
 		//2. 为线程池中的线程分配任务
 		for (int i = 0; i < 10; i++) {
-			pool.submit(tpd);
+			Future<User> userFuture = pool.submit(tpd,new User());
+			System.out.println(userFuture.get().name);
 		}
-		
+
 		//3. 关闭线程池
-		pool.shutdown();*/
+		pool.shutdown();
 	}
 	
 //	new Thread(tpd).start();
@@ -85,5 +86,8 @@ class ThreadPoolDemo implements Runnable{
 			System.out.println(Thread.currentThread().getName() + " : " + i++);
 		}
 	}
-	
+
+}
+class User{
+	String name="赵雅芝";
 }

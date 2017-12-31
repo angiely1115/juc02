@@ -1,7 +1,7 @@
 
 package com.lv.juc;
 
-public class Test005 {
+public class TestDamon {
 
 	/**
 	 * �û��߳� �����̴߳������̡߳� ���ػ��߳� �ػ��߳� �����߳�һ�����١�
