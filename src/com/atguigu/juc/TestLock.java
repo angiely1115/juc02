@@ -30,7 +30,7 @@ public class TestLock {
 class Ticket implements Runnable{
 	
 	private int tick = 100;
-	
+
 	private Lock lock = new ReentrantLock();
 
 	public void tick(){

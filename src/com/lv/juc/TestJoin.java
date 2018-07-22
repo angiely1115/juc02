@@ -8,6 +8,7 @@ public class TestJoin {
 
 			@Override
 			public void run() {
+				System.out.println(Thread.currentThread().getName());
 				for (int i = 0; i < 20; i++) {
 					System.out.println("T1,i:" + i);
 				}
@@ -19,7 +20,8 @@ public class TestJoin {
 			@Override
 			public void run() {
 				try {
-					t1.join();//指在当然线程让出给t1线程等待t1线程执行完毕
+					System.out.println(Thread.currentThread().getName());
+					t1.join();//指在当然线程让出资源给t1线程 等待t1线程执行完毕
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
@@ -40,6 +42,7 @@ public class TestJoin {
 			@Override
 			public void run() {
 				try {
+					System.out.println(Thread.currentThread().getName());
 					t2.join();
 				} catch (Exception e) {
 					// TODO: handle exception

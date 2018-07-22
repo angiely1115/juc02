@@ -52,7 +52,7 @@ public class TestABCAlternate {
 }
 
 class AlternateDemo{
-	
+
 	private int number = 1; //当前正在执行线程的标记
 	
 	private Lock lock = new ReentrantLock();
@@ -69,6 +69,7 @@ class AlternateDemo{
 		try {
 			//1. 判断
 			if(number != 1){
+				System.out.println("thread1......");
 				condition1.await();
 			}
 			
@@ -93,6 +94,7 @@ class AlternateDemo{
 		try {
 			//1. 判断
 			if(number != 2){
+				System.out.println("thread2......");
 				condition2.await();
 			}
 			
@@ -117,6 +119,7 @@ class AlternateDemo{
 		try {
 			//1. 判断
 			if(number != 3){
+				System.out.println("thread3......");
 				condition3.await();
 			}
 			
